@@ -1,0 +1,96 @@
+[2014-04-02 15:46:44] GET /industry HTTP/1.1
+User-Agent: PECL::HTTP/1.7.6 (PHP/5.5.7-1+sury.org~quantal+1)
+Host: api.loosemonkies.local
+Accept: */*
+
+
+
+HTTP/1.1 200 OK
+Date: Wed, 02 Apr 2014 09:46:41 GMT
+Server: Apache/2.4.6 (Ubuntu)
+X-Powered-By: PHP/5.5.9-1+sury.org~quantal+1
+Cache-Control: no-cache
+X-Debug-Token: d5a529
+X-Debug-Token-Link: /_profiler/d5a529
+Transfer-Encoding: chunked
+Content-Type: application/json
+
+495
+[{"id":"51bb127aa34e392154593349","name":"Application Development","slug":"application-development-51bb127aa34e392154593349","sort_order":0},{"id":"51bd4520a34e390d5c629bef","name":null,"slug":"","sort_order":null},{"id":"51bd4d17a34e390f5cc5b1d4","name":"IT Solutions","slug":"it-solutions-51bd4d17a34e390f5cc5b1d4","sort_order":0},{"id":"51bd5575a34e39f15c19e196","name":"Health Care","slug":"health-care-51bd5575a34e39f15c19e196","sort_order":0},{"id":"51c0029ca34e393a656ed093","name":"Freelancing","slug":"freelancing-51c0029ca34e393a656ed093","sort_order":0},{"id":"51c2971ea34e39e025b5a815","name":"Event Management","slug":"event-management-51c2971ea34e39e025b5a815","sort_order":0},{"id":"51c6c408a34e397370d0b95e","name":"Public Relation","slug":"public-relation-51c6c408a34e397370d0b95e","sort_order":0},{"id":"51c83f34a34e3969740f0061","name":"Internet Publishing","slug":"internet-publishing-51c83f34a34e3969740f0061","sort_order":0},{"id":"51c9db00a34e396a74e3bd92","name":"Technology","slug":"technology-51c9db00a34e396a74e3bd92","sort_order":0},{"id":"51c9eabda34e39f078a36779","name":"Logistics","slug":"logistics-51c9eabda34e39f078a36779","sort_order":0}]
+0
+
+
+
+
+[2014-04-02 15:47:44] GET /industry HTTP/1.1
+User-Agent: PECL::HTTP/1.7.6 (PHP/5.5.7-1+sury.org~quantal+1)
+Host: api.loosemonkies.local
+Accept: */*
+
+
+
+HTTP/1.1 200 OK
+Date: Wed, 02 Apr 2014 09:47:44 GMT
+Server: Apache/2.4.6 (Ubuntu)
+X-Powered-By: PHP/5.5.9-1+sury.org~quantal+1
+Cache-Control: no-cache
+X-Debug-Token: dd1320
+X-Debug-Token-Link: /_profiler/dd1320
+Transfer-Encoding: chunked
+Content-Type: application/json
+
+495
+[{"id":"51bb127aa34e392154593349","name":"Application Development","slug":"application-development-51bb127aa34e392154593349","sort_order":0},{"id":"51bd4520a34e390d5c629bef","name":null,"slug":"","sort_order":null},{"id":"51bd4d17a34e390f5cc5b1d4","name":"IT Solutions","slug":"it-solutions-51bd4d17a34e390f5cc5b1d4","sort_order":0},{"id":"51bd5575a34e39f15c19e196","name":"Health Care","slug":"health-care-51bd5575a34e39f15c19e196","sort_order":0},{"id":"51c0029ca34e393a656ed093","name":"Freelancing","slug":"freelancing-51c0029ca34e393a656ed093","sort_order":0},{"id":"51c2971ea34e39e025b5a815","name":"Event Management","slug":"event-management-51c2971ea34e39e025b5a815","sort_order":0},{"id":"51c6c408a34e397370d0b95e","name":"Public Relation","slug":"public-relation-51c6c408a34e397370d0b95e","sort_order":0},{"id":"51c83f34a34e3969740f0061","name":"Internet Publishing","slug":"internet-publishing-51c83f34a34e3969740f0061","sort_order":0},{"id":"51c9db00a34e396a74e3bd92","name":"Technology","slug":"technology-51c9db00a34e396a74e3bd92","sort_order":0},{"id":"51c9eabda34e39f078a36779","name":"Logistics","slug":"logistics-51c9eabda34e39f078a36779","sort_order":0}]
+0
+
+
+
+
+[2014-04-02 15:52:11] GET /industry HTTP/1.1
+User-Agent: PECL::HTTP/1.7.6 (PHP/5.5.7-1+sury.org~quantal+1)
+Host: api.loosemonkies.local
+Accept: */*
+
+
+
+HTTP/1.1 200 OK
+Date: Wed, 02 Apr 2014 09:52:11 GMT
+Server: Apache/2.4.6 (Ubuntu)
+X-Powered-By: PHP/5.5.9-1+sury.org~quantal+1
+Cache-Control: no-cache
+X-Debug-Token: 192367
+X-Debug-Token-Link: /_profiler/192367
+Transfer-Encoding: chunked
+Content-Type: application/json
+
+495
+[{"id":"51bb127aa34e392154593349","name":"Application Development","slug":"application-development-51bb127aa34e392154593349","sort_order":0},{"id":"51bd4520a34e390d5c629bef","name":null,"slug":"","sort_order":null},{"id":"51bd4d17a34e390f5cc5b1d4","name":"IT Solutions","slug":"it-solutions-51bd4d17a34e390f5cc5b1d4","sort_order":0},{"id":"51bd5575a34e39f15c19e196","name":"Health Care","slug":"health-care-51bd5575a34e39f15c19e196","sort_order":0},{"id":"51c0029ca34e393a656ed093","name":"Freelancing","slug":"freelancing-51c0029ca34e393a656ed093","sort_order":0},{"id":"51c2971ea34e39e025b5a815","name":"Event Management","slug":"event-management-51c2971ea34e39e025b5a815","sort_order":0},{"id":"51c6c408a34e397370d0b95e","name":"Public Relation","slug":"public-relation-51c6c408a34e397370d0b95e","sort_order":0},{"id":"51c83f34a34e3969740f0061","name":"Internet Publishing","slug":"internet-publishing-51c83f34a34e3969740f0061","sort_order":0},{"id":"51c9db00a34e396a74e3bd92","name":"Technology","slug":"technology-51c9db00a34e396a74e3bd92","sort_order":0},{"id":"51c9eabda34e39f078a36779","name":"Logistics","slug":"logistics-51c9eabda34e39f078a36779","sort_order":0}]
+0
+
+
+
+
+[2014-04-02 15:53:17] GET /industry HTTP/1.1
+User-Agent: PECL::HTTP/1.7.6 (PHP/5.5.7-1+sury.org~quantal+1)
+Host: api.loosemonkies.local
+Accept: */*
+
+
+
+HTTP/1.1 200 OK
+Date: Wed, 02 Apr 2014 09:53:17 GMT
+Server: Apache/2.4.6 (Ubuntu)
+X-Powered-By: PHP/5.5.9-1+sury.org~quantal+1
+Cache-Control: no-cache
+X-Debug-Token: 56ba00
+X-Debug-Token-Link: /_profiler/56ba00
+Transfer-Encoding: chunked
+Content-Type: application/json
+
+495
+[{"id":"51bb127aa34e392154593349","name":"Application Development","slug":"application-development-51bb127aa34e392154593349","sort_order":0},{"id":"51bd4520a34e390d5c629bef","name":null,"slug":"","sort_order":null},{"id":"51bd4d17a34e390f5cc5b1d4","name":"IT Solutions","slug":"it-solutions-51bd4d17a34e390f5cc5b1d4","sort_order":0},{"id":"51bd5575a34e39f15c19e196","name":"Health Care","slug":"health-care-51bd5575a34e39f15c19e196","sort_order":0},{"id":"51c0029ca34e393a656ed093","name":"Freelancing","slug":"freelancing-51c0029ca34e393a656ed093","sort_order":0},{"id":"51c2971ea34e39e025b5a815","name":"Event Management","slug":"event-management-51c2971ea34e39e025b5a815","sort_order":0},{"id":"51c6c408a34e397370d0b95e","name":"Public Relation","slug":"public-relation-51c6c408a34e397370d0b95e","sort_order":0},{"id":"51c83f34a34e3969740f0061","name":"Internet Publishing","slug":"internet-publishing-51c83f34a34e3969740f0061","sort_order":0},{"id":"51c9db00a34e396a74e3bd92","name":"Technology","slug":"technology-51c9db00a34e396a74e3bd92","sort_order":0},{"id":"51c9eabda34e39f078a36779","name":"Logistics","slug":"logistics-51c9eabda34e39f078a36779","sort_order":0}]
+0
+
+
+
+

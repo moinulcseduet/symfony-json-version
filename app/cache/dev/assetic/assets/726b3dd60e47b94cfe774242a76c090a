@@ -1,0 +1,7 @@
+function setImage(img) {
+    $('.phone').attr('src', '../' + img);
+}
+
+function searchList() {
+    alert('hello');
+}

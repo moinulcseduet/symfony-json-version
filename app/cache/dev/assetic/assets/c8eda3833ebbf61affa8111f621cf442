@@ -1,0 +1,624 @@
+
+_.isTrue  = function(val){
+
+    return (val == true || val == 'true' || val == 1 || val == '1');
+
+}
+
+_.isFalse = function(val){
+
+    return (val == false || val == 'false' || val == 0 || val == '0');
+
+}
+
+/**
+ *
+ * Administrative panel related functionality
+ *
+ **/
+var Admin = {
+
+    loader: '<img id="ajax-loader" src="/img/ajax-loader.gif"/>',
+
+    init: function(){
+
+        this.handleAdminLogin();
+        this.handleAdminUser();
+        this.handleUser();
+        this.handleLoadCredit();
+        this.handleSettings();
+        this.handleSpamReports();
+    },
+
+    handleSettings:function(){
+
+        var self = this;
+
+        $(".sandbox-mode").live('click', function(){
+
+            if ($(this).val() == 'on') {
+
+                self.updateMaintenanceMode('on');
+
+            }else{
+
+                self.updateMaintenanceMode('off');
+
+            }
+
+        });
+
+    },
+
+    handleSpamReports: function()
+    {
+        var self = this;
+        $(".seeker-profile").live('click', function(e){
+
+            var href = $(e.target).attr('href');
+            self.renderView(href, 'seeker');
+            return false;
+
+        });
+
+        $(".job-details").live('click', function(e){
+
+            var href = $(e.target).attr('href');
+            self.renderView(href, 'job');
+            return false;
+
+        });
+
+        $(".report-status").live('change', function(){
+
+            var newStatus = $(this).val();
+            var spamId = $(this).data('id');
+
+            $(this).after(self.loader);
+
+            $.ajax({
+                type: "POST",
+                data: {'status': newStatus, 'Id': spamId},
+                url: '/admin/spam/status',
+
+                success: function(response) {
+
+                    $("#ajax-loader").remove();
+                    if (!_.isUndefined(response.status)) {
+                        $('#request-message').html('Success! Report status changed to '+ newStatus).show();
+                    }
+
+                },
+
+                error: function(jxhr) {
+
+                    $("#ajax-loader").remove();
+                    console.log('response: ', jxhr);
+                    $('#request-message').html('Error! Report status change failed');
+                }
+            });
+
+        });
+
+        $(".rank").live('change', function(){
+
+            var newRank = $(this).val();
+            var spamId = $(this).data('id');
+
+            $(this).after(self.loader);
+
+            $.ajax({
+                type: "POST",
+                data: {'rank': newRank, 'Id': spamId},
+                url: '/admin/spam/rank',
+
+                success: function(response) {
+
+                    $("#ajax-loader").remove();
+                    if (!_.isUndefined(response.rank)) {
+                        $('#request-message').html('Success! Report rank set to '+ newRank).show();
+                    }
+
+                },
+
+                error: function(jxhr) {
+
+                    $("#ajax-loader").remove();
+                    console.log('response: ', jxhr);
+                    $('#request-message').html('Error! Report rank set failed');
+                }
+            });
+
+        });
+
+        $(".ban-spam").live('click', function(e){
+
+            var id = $(e.target).data('id');
+            var type = $(e.target).data('type');
+            var status = $(e.target).data('status');
+
+            console.log('id for ban: ', id);
+
+            $("#banModal").data('id', id);
+            $("#banModal").data('type', type);
+            $("#banModal").data('status', status);
+
+            $("#banModal").modal('show');
+
+        });
+
+
+        $("#confirm-ban-spam").live('click', function(){
+
+            var Id = $("#banModal").data('id');
+            var type = $("#banModal").data('type');
+            var status = $("#banModal").data('status');
+            $("#request-message").html(Admin.loader + ' changing status...').show();
+
+            $.ajax({
+                type: "POST",
+                data: {'status': status, 'type': type, 'id': Id},
+                url: '/admin/changeSpamStatus',
+
+                success: function(response) {
+
+                    console.log('ban spam: ', response)
+                    $("#request-message").html('Success! status is successfully changed to <b>' + response.action + '</b>');
+
+                    if (response.action == 'banned'){
+                        $('.ban-spam[data-id='+ Id +']').removeClass('btn-danger').addClass('btn-success').html('Unbanned').data('status', 'unbanned');
+                    }else{
+                        $('.ban-spam[data-id='+ Id +']').removeClass('btn-success').addClass('btn-danger').html('Banned').data('status', 'banned');
+                    }
+
+                },
+
+                error: function(jxhr) {
+
+                    $("#request-message").html('Failed! status is not changed. Please try again');
+
+                }
+            })
+
+        });
+
+
+    }, //end of spam report handler
+
+    renderView: function(href, templateType)
+    {
+        $("#viewModal").find('#view-content').html(this.loader + ' Loading details..');
+        $("#viewModal").modal('show');
+
+        $.getJSON(href, function (response) {
+
+            console.log( templateType + ' : ', response);
+
+            if (templateType == 'job') {
+
+                var viewContent = _.template(Templates.JobView, response);
+            }else{
+                var viewContent = _.template(Templates.SeekerProfile, response);
+            }
+
+            $("#viewModal").find('#view-content').html(viewContent);
+
+        }).fail(function( jqxhr, textStatus, error ) {
+
+            var err = textStatus + ', ' + error;
+            console.log( "Request Failed: " + err);
+            $("#viewModal").find('#view-content').html('Sorry! No resource found.');
+        });
+    },
+
+    updateMaintenanceMode: function(mode){
+
+        $("#request-message").html(Admin.loader + ' Settings update in progress...').show();
+        $.ajax({
+            type: 'POST',
+            url: '/admin/changeMaintenanceMode',
+            data: {'maintenance_mode': mode},
+            success:function(data){
+
+                $("#request-message").html('').hide();
+
+                if (!_.isUndefined(data.maintenance_mode) && data.maintenance_mode == '0') {
+
+                    $(".sandbox-alert").addClass('hide');
+
+                }else{
+
+                    $(".sandbox-alert").removeClass('hide');
+                }
+
+            },
+            error: function(jxhr) {
+
+                console.log('Error: ', jxhr);
+                $("#request-message").html('Sorry! Settings update Failed').show();
+
+            }
+        });
+    },
+
+    handleAdminLogin: function(){
+
+        var self = this;
+
+        $("#adminLogin input").live('keydown',function(e){
+
+            if (e.keyCode == 13){
+
+                console.log('form submit');
+                $("#btnAdminLogin").click();
+            }
+        });
+
+        $("#btnAdminLogin").live('click', function(e){
+
+            e.preventDefault();
+            var form = $("#adminLogin");
+            var errorContainer = $('#login-box .login-error');
+
+            if (!self.isLoginValid()) {
+                errorContainer.removeClass('alert-success').addClass('alert alert-error').html('Please enter login information properly ');
+                return false;
+            }
+
+            $(e.target).attr('disabled', true);
+
+
+            errorContainer.removeClass('alert-error').addClass('alert-success').html( Admin.loader + ' Logging in progress...');
+
+            $.ajax({
+                url: '/admin/login',
+                data: form.serialize(),
+                type: 'POST',
+                success: function(responseText, jXHR) {
+
+                    if (_.isObject(responseText)) {
+                        location.href='/dashboard';
+                    }
+
+                },
+                error: function(jxhr) {
+
+                    if (jxhr.status == 401){
+
+                        errorContainer.removeClass('alert-success').addClass('alert alert-error').html('Sorry! Your account is currently inactive');
+                        $(e.target).attr('disabled', false);
+
+                    }else{
+
+                        errorContainer.removeClass('alert-success').addClass('alert alert-error').html('Sorry! Invalid email or password');
+                        $(e.target).attr('disabled', false);
+
+                    }
+
+                }
+            })
+
+        });
+    },
+
+    isLoginValid: function(){
+
+        var login = $("#username").val().trim();
+        var password = $("#password").val().trim();
+
+        if (_.isEmpty(login) || _.isEmpty(password)) {
+            return false;
+        }
+
+        return true;
+    },
+
+    handleAdminUser: function(){
+
+        $(".delete").live('click',function (e) {
+
+            var id = $(e.target).data('id');
+            $("#myModal").data('id', id);
+            $("#myModal").modal('show');
+        });
+
+        $(".change-status").live('click', function (e) {
+
+            var id = $(e.target).data('id');
+            var status = $(e.target).data('title');
+
+            $("#changeStatusModal").data('id', id);
+            $("#changeStatusModal").data('status', status);
+            $("#changeStatusModal").modal('show');
+        });
+
+        $("#confirm-delete").live('click', function () {
+            var userId = $("#myModal").data('id');
+            $("#request-message").html(Admin.loader + ' Remove admin user in progress...').show();
+
+            $.getJSON('/admin/delete/' + userId, function (response) {
+                console.log('userId: ', response.result);
+
+                if (response.result){
+
+                    $("#request-message").html( 'Success!' + response.result).show();
+                    $("#row_" + userId).parent().parent().fadeOut();
+
+                }
+
+
+            })
+                .fail(function( jqxhr, textStatus, error ) {
+                    var err = textStatus + ', ' + error;
+                    console.log( "Request Failed: " + err);
+                });
+        });
+
+        $("#change-status").live('click', function () {
+            var userId = $("#changeStatusModal").data('id');
+            var status = $("#changeStatusModal").data('status');
+            $("#request-message").html(Admin.loader + ' changing status...').show();
+
+            $.ajax({
+                type: 'POST',
+                url: '/admin/changeStatus',
+                data: 'userId='+userId + '&status=' + status,
+                success: function(data){
+
+                    if (_.isObject(data)) {
+                        $(".status_" + userId).html(data.status);
+                        $("#request-message").html('Success! Status is successfully changed.').show();
+
+                        if (status == 'inactive') {
+                            $(".change-status[data-id="+ userId +"]").html('Active').data('title','active').removeClass('btn-warning').addClass('btn-success');
+                        }else{
+                            $(".change-status[data-id="+ userId +"]").html('Inactive').data('title','inactive').removeClass('btn-success').addClass('btn-warning');
+                        }
+                    }
+
+                },
+                error: function(data){
+                    $("#request-message").removeClass('alert-success').addClass('alert-danger').html('Sorry! Status is not changed.').show();
+                }
+            })
+        });
+    },
+
+    handleUser: function(){
+
+        $(".ban-user").live('click',function (e) {
+
+            var id = $(e.target).data('id');
+            var status = $(e.target).data('title');
+
+            $("#banUserModal").data('id', id);
+            $("#banUserModal").data('status',status);
+
+            $("#banUserModal").find('#confirm-ban-user').html(Admin._capitaliseFirstLetter(status));
+            $("#banUserModal").find('#block-text').html(status);
+
+            $("#banUserModal").modal('show');
+
+        });
+
+        $("#confirm-ban-user").live('click', function () {
+            var userId = $("#banUserModal").data('id');
+            var status = $("#banUserModal").data('status');
+            $("#request-message").html(Admin.loader + ' changing status...').show();
+            $.ajax({
+                type: 'POST',
+                url: '/admin/banUser',
+                data: 'userId=' + userId + '&status=' + status,
+                success:function(data){
+
+                    if (!_.isUndefined(data.locked)) {
+
+
+                        $("#request-message").removeClass('alert-danger').html('Success! Following user is successfully '+ status).show();
+
+                        if (status == 'blocked') {
+                            $(".status_" + userId).html('<span class="badge badge-important">YES</span>');
+                            $(".ban-user[data-id="+ userId +"]").html('Unblock').data('title','active').removeClass('btn-warning').addClass('btn-success');
+                        }else{
+                            $(".status_" + userId).html('<span class="badge badge-success">NO</span>');
+                            $(".ban-user[data-id="+ userId +"]").html('Block').data('title','blocked').removeClass('btn-success').addClass('btn-danger');
+                        }
+
+                    }
+
+                },
+                error:function(){
+
+                    $("#request-message").removeClass('alert-success').addClass('alert-danger').html('Sorry! Ban failed. Please try again.').show();
+
+                }
+            })
+
+        });
+
+    },
+
+    handleLoadCredit:function(){
+
+        var self = this;
+
+        $(".add-credit").live('click',function (e) {
+
+            var id = $(e.target).data('id');
+
+            $("#addCreditModal").data('id', id);
+            $("#addCreditModal").modal('show');
+
+        });
+
+
+        $("#load-now").live('click', function(){
+
+            var credit = $("#new-credit-amount").val();
+            var companyId = $("#addCreditModal").data('id');
+
+            $("#request-message").html(Admin.loader + ' Loading balance...').show();
+
+            $.ajax({
+                type: "POST",
+                url: '/admin/addCredit',
+                data: 'credit=' + credit + '&companyId=' + companyId,
+                success:function(data) {
+
+                    if (_.isUndefined(data.result)) {
+
+                        $(".balance_" + companyId).html(data.balance).addClass('highlight-value');
+                        setTimeout(function(){
+                            $(".balance_" + companyId).removeClass('highlight-value');
+                        }, 1000);
+
+                        $("#request-message").removeClass('alert-danger').html('Success! '+ credit + ' credit is successfully added').show();
+                        $("#new-credit-amount").val('');
+
+                    } else {
+
+                        $("#request-message").removeClass('alert-success').addClass('alert-danger').html('Sorry! ' + credit + ' is credit failed to load').show();
+                        $("#new-credit-amount").val('');
+
+                    }
+
+                },
+                error: function(jxhr) {
+
+
+
+                }
+            })
+
+
+        });
+
+
+        $("#new-credit-amount").live('keydown',function(event){
+
+            self._allowNumberOnly(event);
+
+        });
+
+        $(".show-credit").live('click',function (e) {
+
+            var companyId = $(e.target).data('id');
+            var companyName = $(e.target).data('title');
+
+            $("#historyModal").find('#history-content').html(self.loader + ' Loading credit load history..');
+            $("#historyModal").find('#history-company-name').html(companyName);
+
+            $("#historyModal").modal('show');
+            self.loadHistory(companyId);
+
+        });
+
+    },
+
+    loadHistory: function(companyId){
+
+        //companyId = '51cbcbad7eb656e649000007'; //test purpose
+
+        $.getJSON('/admin/getCreditHistory/' + companyId, function(data){
+
+            var html = ''
+            if (!_.isUndefined(data.result) && !_.isEmpty(data.result)) {
+
+                html += '<table class="table table-striped table-hover table-bordered"><thead><tr><th width="50%">Date</th><th width="25%">Credit Amount</th><th width="25%">Credit Charge</th></tr></thead><tbody>';
+
+                $.each(data.result, function(key, val) {
+
+                    html += '<tr><td>'+ val.date +'</td><td style="text-align: right">'+ val.credit +'</td><td style="text-align: right">$'+ (_.isNull(val.credit_amount)? 0 : val.credit_amount) +' USD</td></tr>';
+
+                });
+                html += '</tbody></table>';
+
+            }else{
+                html = "Sorry! No previous load history is available";
+            }
+
+            $("#historyModal").find('#history-content').html(html);
+
+        });
+
+    },
+
+    _capitaliseFirstLetter: function(string){
+
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    },
+
+    _allowNumberOnly: function(event){
+
+        // Allow: backspace, delete, tab, escape, and enter
+        if ( event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+            // Allow: Ctrl+A
+            (event.keyCode == 65 && event.ctrlKey === true) ||
+            // Allow: home, end, left, right
+            (event.keyCode >= 35 && event.keyCode <= 39)) {
+            // let it happen, don't do anything
+            return;
+        }
+        else {
+            // Ensure that it is a number and stop the keypress
+            if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
+                event.preventDefault();
+            }
+        }
+
+    },
+
+    parseVocabulary: function(str, code, separator){
+
+        if( _.isNull( str ) || _.isUndefined( str ) || str == 0 || str == '0'){
+            return str;
+        }
+
+        var separator = separator || '^^';
+        var arr       = str.split(separator);
+
+        if( code ){
+            return arr[0];
+        }
+        return arr[1];
+    },
+
+    _: function(val, sep) {
+        var separator = sep || ', ';
+
+        if(_.isNull(val) || _.isUndefined(val)){
+            return '';
+        } else if(_.isArray(val)){
+            return _.map(_.compact(val), function(nonEmptyVal){
+                    return Admin._(nonEmptyVal.toString()); }
+            ).join(separator);
+        } else {
+            return _.escape(val);
+        }
+    },
+
+    nl2br: function (str, is_xhtml) {
+        var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
+        return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
+    },
+
+    date: function(val) {
+        if(_.isNull(val)){
+            return 'n/a';
+        } else if (_.isUndefined(val)) {
+            return 'n/a';
+        } else {
+            var date = val.date.split(' ');
+            date = date[0];
+            console.log(this.dateFormat);
+            return dateFormat(date, this.dateFormat);
+
+        }
+    }
+
+};
+
+Admin.init();
+
+
+

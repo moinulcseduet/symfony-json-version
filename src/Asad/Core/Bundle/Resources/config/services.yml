@@ -1,0 +1,26 @@
+parameters:
+  controller_listener.class: Asad\Core\Bundle\EventListener\ControllerListener
+
+  phone_service.class: Asad\Core\Bundle\Service\Phone
+
+  phone_model.class: Asad\Core\Bundle\Model\Phone
+
+services:
+  controller_listener:
+      class: %controller_listener.class%
+      arguments: [@service_container]
+      tags:
+        -   { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+
+  phone_service:
+      class: %phone_service.class%
+      arguments: [@service_container, %service_endpoint%, %service_client%]
+
+  phone_model:
+      class: %phone_model.class%
+      arguments: [@service_container]
+
+  asad.twig.mark_extension:
+      class: Asad\Core\Bundle\Twig\MarkExtension
+      tags:
+           - { name: twig.extension }

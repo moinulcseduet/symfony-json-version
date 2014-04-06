@@ -1,0 +1,16 @@
+function setImage(img) {
+    $('.phone').attr('src', '../' + img);
+}
+
+function searchList(searchkey) {
+
+    $.ajax({
+        url: "/phone-search/" + searchkey,
+        type: "post",
+        data: {name: 'zara'},
+        success: function(){
+            alert("success");
+            //$("#result").html('Submitted successfully');
+        }
+    });
+}

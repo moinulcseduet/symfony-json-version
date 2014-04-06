@@ -1,0 +1,6 @@
+asad_core:
+    resource: "@AsadCoreBundle/Resources/config/routing.yml"
+    prefix:   /
+
+
+

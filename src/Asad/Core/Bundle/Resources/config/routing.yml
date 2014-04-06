@@ -1,0 +1,21 @@
+asad_core_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: AsadCoreBundle:Default:index }
+
+asad_core_phone_list:
+    pattern:  /phone-list
+    defaults: { _controller: AsadCoreBundle:Default:phone }
+
+asad_core_phone_details:
+    pattern:  /phone-details/{id}
+    defaults: { _controller: AsadCoreBundle:Default:phoneDetails }
+
+asad_core_phone_search_list:
+    pattern:  /phone-search
+    defaults: { _controller: AsadCoreBundle:Default:phoneSearch }
+    requirements: { _method: POST }
+
+asad_core_phone_sort_list:
+    pattern:  /phone-sort/list
+    defaults: { _controller: AsadCoreBundle:Default:phoneSort }
+    requirements: { _method: POST }

@@ -1,0 +1,15 @@
+function setImage(img) {
+    $('.phone').attr('src', '../' + img);
+}
+
+function searchList(searchkey) {
+    $.post(
+        "/phone-search/" + searchkey,
+        { name: "Zara" },
+        function(data) {
+            alert(data);
+            //$('#stage').html(data);
+        }
+
+    );
+}

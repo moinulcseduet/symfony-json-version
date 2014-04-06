@@ -1,0 +1,16 @@
+function setImage(img) {
+    $('.phone').attr('src', '../' + img);
+}
+
+function searchList(searchkey) {
+
+    $.ajax({
+        url: "/phone-search",
+        type: "post",
+        data: {name: searchkey},
+        success: function(){
+            alert("success");
+            //$("#result").html('Submitted successfully');
+        }
+    });
+}
