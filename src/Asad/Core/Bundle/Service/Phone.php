@@ -6,14 +6,14 @@ class Phone extends Base
 {
     public function phoneList()
     {
-        $response = file_get_contents('phones/phones.json');
+        $response = file_get_contents('assets/phones/phones.json');
 
         return $response;
     }
 
     public function phoneDetails($id)
     {
-        $response = file_get_contents('phones/'.$id.'.json');
+        $response = file_get_contents('assets/phones/'.$id.'.json');
 
         return $response;
 
@@ -28,7 +28,7 @@ class Phone extends Base
 
     public function phoneSearch()
     {
-        $response = file_get_contents('phones/phones.json');
+        $response = file_get_contents('assets/phones/phones.json');
 
         return $response;
     }
