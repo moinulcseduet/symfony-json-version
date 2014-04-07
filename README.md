@@ -10,7 +10,7 @@ Clone the repository to your local
 
 Create a VirtualHost:
 
-ServerName www.docudex.dev
+ServerName www.any name.dev
 
 <Directory "/Users/emran/Sites/rbs/any name/web">
    Options Indexes FollowSymLinks MultiViews
